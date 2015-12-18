@@ -1,0 +1,9 @@
+{
+	"name": "todomvc-kaon",
+	"version": "0.0.1",
+	"dependencies": {
+		"todomvc-common": "^1.0.1",
+		"todomvc-app-css": "^1.0.0",
+		"kaon": "../../"
+	}
+}

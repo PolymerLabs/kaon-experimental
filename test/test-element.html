@@ -1,0 +1,47 @@
+<template id="test-element">
+  <h1>Example Kaon Element</h1>
+  <div>this.foo: <span>{{foo}}</span></div>
+  <div>this.bar: <span>{{bar}}</span></div>
+  <div>this.baz: <span>{{baz}}</span></div>
+  <div>input: <input value="{{baz}}"></input></div>
+  <template if="{{baz > 4000}}">
+    <h1>Yeah!</h1>
+  </template>
+</template>
+
+<script>
+  import { KaonElement, customElement, property, template } from 'kaon';
+
+  @customElement('test-element')
+  @template('#test-element')
+  class TestElement extends KaonElement {
+
+    @property
+    bar : Number = 123;
+
+    @property
+    foo : String = 'foo';
+
+    @property
+    baz : Number = 1;
+
+    @property
+    plain : String = 'plain' + 'string';
+
+    @property
+    list : Array<Number>;
+
+    constructor() {
+      super();
+      this.baz = performance.now();
+      // setInterval(() => {
+      //   this.baz = performance.now();
+      // }, 100);
+    }
+
+    foo() {
+      // this.
+    }
+
+  }
+</script>

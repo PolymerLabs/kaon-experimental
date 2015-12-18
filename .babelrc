@@ -1,0 +1,12 @@
+{
+  "plugins": [
+    "syntax-decorators",
+    "babel-deco",
+    "transform-flow-strip-types",
+    "transform-class-properties",
+    "transform-es2015-spread",
+    "transform-es2015-parameters",
+    "transform-es2015-modules-amd",
+  ],
+  "presets": ["stage-1"],
+}

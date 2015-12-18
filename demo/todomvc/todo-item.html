@@ -1,0 +1,31 @@
+<template id="todo-item">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <input
+    type="checkbox"
+    class="toggle"
+    checked="{{todo.completed}}"
+    on-change="{{_completedChanged($event)}}">
+  <span>{{todo.title}}</span>
+  <button class="destroy" on-tap="_destroyAction"></button>
+</template>
+
+<script>
+  import { KaonElement, customElement, property, template } from 'kaon';
+
+  @customElement('todo-item')
+  @template('#todo-item')
+  class TodoItem extends KaonElement {
+
+    @property
+    todo;
+
+    _completedChanged(event) {
+      console.log('_completedChanged');
+    }
+
+  }
+</script>

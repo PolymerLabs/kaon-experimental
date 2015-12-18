@@ -1,0 +1,19 @@
+<template id="x-greeting">
+  <h1><span>{{greeting || 'Hello'}}</span>  <span>{{name || 'World'}}</span></h1>
+</template>
+
+<script>
+  import { KaonElement, customElement, property, template } from 'kaon';
+
+  @customElement('x-greeting')
+  @template('#x-greeting')
+  class TestElement extends KaonElement {
+
+    @property
+    greeting : String;
+
+    @property
+    name : String;
+
+  }
+</script>

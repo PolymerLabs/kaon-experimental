@@ -1,0 +1,144 @@
+<template id="todo-app">
+  <style>
+    :host {
+      display: block;
+    }
+
+    #todoapp {
+    	background: #fff;
+    	margin: 130px 0 40px 0;
+    	position: relative;
+    	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+    	            0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    input::-webkit-input-placeholder {
+    	font-style: italic;
+    	font-weight: 300;
+    	color: #e6e6e6;
+    }
+
+    input::-moz-placeholder {
+    	font-style: italic;
+    	font-weight: 300;
+    	color: #e6e6e6;
+    }
+
+    input::input-placeholder {
+    	font-style: italic;
+    	font-weight: 300;
+    	color: #e6e6e6;
+    }
+
+    h1 {
+    	position: absolute;
+    	top: -155px;
+    	width: 100%;
+    	font-size: 100px;
+    	font-weight: 100;
+    	text-align: center;
+    	color: rgba(175, 47, 47, 0.15);
+    	-webkit-text-rendering: optimizeLegibility;
+    	-moz-text-rendering: optimizeLegibility;
+    	text-rendering: optimizeLegibility;
+    }
+
+    #new-todo,
+    .edit {
+    	position: relative;
+    	margin: 0;
+    	width: 100%;
+    	font-size: 24px;
+    	font-family: inherit;
+    	font-weight: inherit;
+    	line-height: 1.4em;
+    	border: 0;
+    	outline: none;
+    	color: inherit;
+    	padding: 6px;
+    	border: 1px solid #999;
+    	box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+    	box-sizing: border-box;
+    	-webkit-font-smoothing: antialiased;
+    	-moz-font-smoothing: antialiased;
+    	font-smoothing: antialiased;
+    }
+
+    #new-todo {
+    	padding: 16px 16px 16px 60px;
+    	border: none;
+    	background: rgba(0, 0, 0, 0.003);
+    	box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
+    }
+
+    #main {
+    	position: relative;
+    	z-index: 2;
+    	border-top: 1px solid #e6e6e6;
+    }
+
+    #info {
+    	margin: 65px auto 0;
+    	color: #bfbfbf;
+    	font-size: 10px;
+    	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    	text-align: center;
+    }
+
+    #info p {
+    	line-height: 1;
+    }
+
+    #info a {
+    	color: inherit;
+    	text-decoration: none;
+    	font-weight: 400;
+    }
+
+    #info a:hover {
+    	text-decoration: underline;
+    }
+  </style>
+  <div id="todoapp">
+    <header>
+      <h1>todos</h1>
+    </header>
+    <header id="header">
+      <input
+        id="new-todo"
+        autofocus
+        placeholder="What needs to be done?"
+        on-keypress="{{newTodoKeypress($event)}}">
+    </header>
+    <div id="main">
+      <template type="repeat" repeat="{{todos}}">
+        <div>{{item.title}}</div>
+      </template>
+    </div>
+  </div>
+  <footer id="info">
+    <p>Double-click to edit a todo</p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+  </footer>
+</template>
+
+<script>
+  import { KaonElement, customElement, property, template } from 'kaon';
+
+  @customElement('todo-app')
+  @template('#todo-app')
+  class TodoApp extends KaonElement {
+
+    @property
+    todos : Array = [{title: 'Finish TodoMVC', completed: false}];
+
+    newTodoKeypress(keyCode) {
+      if (event.keyCode === 13) {
+        this.todos.push({title: event.target.value, completed: false});
+        event.target.value = '';
+        this.invalidate();
+      }
+    }
+
+  }
+</script>

@@ -1,0 +1,10 @@
+{
+  "name": "kaon",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "system.js": "~0.18.11",
+    "imd": "PolymerLabs/IMD#~1.0.0"
+  }
+}
