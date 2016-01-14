@@ -313,10 +313,14 @@ of total overhead, potentially eating into frame budget.
 
 There are a few things that mitigate this impact:
 
-  1. It should be rare that the whole tree will update. Since Kaon supports
+  1. It should be rare that the whole tree will update.
+     First, since Kaon supports
      custom equality checks and identity checks, it will be possible to prune
      updates to subtrees when their data hasn't changed. Kaon will play
      particularly well with immutable data models, much like Om.
+     Second, Kaon can track which properties on an element changed, and update
+     only the portions of the tree which depend on those properties,
+     not the whole tree.
   2. Updates can be flushed synchronously. If we know that no other code will
      mutate an element, we can reconcile it immediately after applying updates
      from within Kaon, skipping the microtasks altogether. This should be
@@ -416,21 +420,21 @@ There aren't much in the way of demos yet.
 
 ### Hello World:
 
-    $ cd kaon
-    $ gulp
     $ cd build
     $ polyserve
 
-Open http://localhost:8080/components/build/test/test.html
+Open http://localhost:8080/components/build/hello-world/index.html
 
 ### TodoMVC
 
 TodoMVC is not yet complete, and probably requires more work on Kaon to be
 fully implementable.
 
-    $ cd kaon
+    $ cd demo/todomvc
+    $ bower install
+    $ cd ../../
     $ gulp
-    $ cd build/demo/todomvc
+    $ cd build
     $ polyserve
 
-Open http://localhost:8080/components/todomvc-kaon/
+Open http://localhost:8080/components/build/demo/todomvc/

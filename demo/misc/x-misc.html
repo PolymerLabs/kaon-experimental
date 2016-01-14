@@ -1,4 +1,4 @@
-<template id="test-element">
+<template id="x-misc">
   <h1>Example Kaon Element</h1>
   <div>this.foo: <span>{{foo}}</span></div>
   <div>this.bar: <span>{{bar}}</span></div>
@@ -12,9 +12,9 @@
 <script>
   import { KaonElement, customElement, property, template } from 'kaon';
 
-  @customElement('test-element')
-  @template('#test-element')
-  class TestElement extends KaonElement {
+  @customElement('x-misc')
+  @template('#x-misc')
+  class MiscElement extends KaonElement {
 
     @property
     bar : Number = 123;

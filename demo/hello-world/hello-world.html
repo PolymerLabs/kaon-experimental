@@ -1,0 +1,33 @@
+<link rel="import" href="x-greeting.html">
+
+<template id="hello-world">
+  <h1>Hello World</h1>
+  <div>Greeting: <input on-change="{{_onGreetingChange($event)}}"></div>
+  <div>Name: <input on-change="{{_onNameChange($event)}}"></div>
+  <div>
+    <x-greeting greeting="{{greeting}}" name="{{name}}"></x-greeting>
+  </div>
+</template>
+
+<script>
+  import { KaonElement, customElement, property, template } from 'kaon';
+
+  @customElement('hello-world')
+  @template('#hello-world')
+  class HelloWorldElement extends KaonElement {
+
+    @property
+    greeting : String;
+
+    @property
+    name : String;
+
+    _onGreetingChange(e) {
+      this.greeting = e.target.value;
+    }
+
+    _onNameChange(e) {
+      this.name = e.target.value;
+    }
+  }
+</script>
