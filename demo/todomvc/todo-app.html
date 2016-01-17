@@ -1,3 +1,5 @@
+<link rel="import" href="todo-item.html">
+
 <template id="todo-app">
   <style>
     :host {
@@ -112,7 +114,11 @@
     </header>
     <div id="main">
       <template type="repeat" repeat="{{todos}}">
-        <div>{{item.title}}</div>
+        <todo-item
+          todo="{{item}}"
+          index="{{index}}"
+          on-todo-destroy="{{_todoDestroy($event.detail.index)}}">
+        </todo-item>
       </template>
     </div>
   </div>
@@ -132,12 +138,17 @@
     @property
     todos : Array = [{title: 'Finish TodoMVC', completed: false}];
 
-    newTodoKeypress(keyCode) {
+    newTodoKeypress(event) {
       if (event.keyCode === 13) {
         this.todos.push({title: event.target.value, completed: false});
         event.target.value = '';
         this.invalidate();
       }
+    }
+
+    _todoDestroy(index) {
+      this.todos.splice(index, 1);
+      this.invalidate();
     }
 
   }

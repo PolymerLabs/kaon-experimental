@@ -2,15 +2,92 @@
   <style>
     :host {
       display: block;
+      font-size: 24px;
+      border-bottom: 1px solid #ededed;
+    }
+
+    .toggle {
+      text-align: center;
+      width: 40px;
+      /* auto, since non-WebKit browsers doesn't support input styling */
+      height: auto;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto 0;
+      border: none; /* Mobile Safari */
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    label {
+      white-space: pre;
+      word-break: break-word;
+      padding: 15px 60px 15px 15px;
+      margin-left: 45px;
+      display: block;
+      line-height: 1.2;
+      transition: color 0.4s;
+    }
+
+    .destroy {
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 10px;
+      bottom: 0;
+      width: 40px;
+      height: 40px;
+      margin: auto 0;
+      font-size: 30px;
+      color: #cc9a9a;
+      margin-bottom: 11px;
+      transition: color 0.2s ease-out;
+    }
+
+    .destroy:hover {
+      color: #af5b5e;
+    }
+
+    .destroy:after {
+      content: '×';
+    }
+
+    :host(:hover) .destroy {
+      display: block;
+    }
+
+    button {
+    	margin: 0;
+    	padding: 0;
+    	border: 0;
+    	background: none;
+    	font-size: 100%;
+    	vertical-align: baseline;
+    	font-family: inherit;
+    	font-weight: inherit;
+    	color: inherit;
+    	-webkit-appearance: none;
+    	appearance: none;
+    	-webkit-font-smoothing: antialiased;
+    	-moz-font-smoothing: antialiased;
+    	font-smoothing: antialiased;
+    }
+
+    button, input[type="checkbox"] {
+      outline: none;
     }
   </style>
   <input
     type="checkbox"
-    class="toggle"
+    class$="toggle"
     checked="{{todo.completed}}"
-    on-change="{{_completedChanged($event)}}">
-  <span>{{todo.title}}</span>
-  <button class="destroy" on-tap="_destroyAction"></button>
+    on-change="{{_completedChanged($event)}}"></input>
+  <label>{{todo.title}}</label>
+  <button
+    class$="destroy"
+    on-click="{{_destroy()}}">
+  </button>
 </template>
 
 <script>
@@ -20,11 +97,20 @@
   @template('#todo-item')
   class TodoItem extends KaonElement {
 
-    @property
-    todo;
+    @property todo;
+    @property index;
 
     _completedChanged(event) {
       console.log('_completedChanged');
+    }
+
+    _destroy() {
+      this.dispatchEvent(new CustomEvent('todo-destroy', {
+        detail: {
+          todo: this.todo,
+          index: this.index,
+        },
+      }));
     }
 
   }
