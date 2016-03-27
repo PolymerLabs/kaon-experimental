@@ -1,8 +1,10 @@
+import {Constructable, Base, CustomElement} from './util';
+import {KaonBase} from './base';
 import * as stampino from 'stampino';
-import {_template} from 'kaon/symbols';
+import {_template} from './symbols';
 
 // passed to stampino to implement declarative event handlers
-const attributeHandler = {
+let attributeHandler = {
   matches: (name) => name.startsWith('on-'),
   handle: (element, name, value, model) => {
     let eventName = name.substring(3);
@@ -42,22 +44,23 @@ export const template = (selector) => (clazz) => {
  * @template('#my-element')
  * class Foo extends TemplateStamping(Kaon(HTMLElement)) {}
  */
-export const TemplateStamping = (superclass) => class extends superclass {
+export const TemplateStamping = (superclass: Constructable<KaonBase>) =>
+  class extends superclass {
 
-  get template() {
-    return this.constructor[_template];
-  }
-
-  render() {
-    if (this.template && this.shadowRoot) {
-      // TODO: use super-classes template for tempalte inheritance
-      stampino.render(this.template, this.shadowRoot, this, {
-        attributeHandler,
-      });
+    get template() {
+      return this.constructor[_template];
     }
-    if (super.render) {
-      super.render();
-    }
-  }
 
-};
+    render() {
+      if (this.template && this.shadowRoot) {
+        // TODO: use super-classes template for tempalte inheritance
+        stampino.render(this.template, this.shadowRoot, this, {
+          attributeHandler,
+        });
+      }
+      if (super.render) {
+        super.render();
+      }
+    }
+
+  };

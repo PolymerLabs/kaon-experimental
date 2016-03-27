@@ -3,26 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "babel-plugin-syntax-decorators": "^6.1.18",
-    "babel-plugin-transform-es2015-modules-amd": "^6.1.18",
     "stampino": "^0.2.1",
-    "mixwith": "^0.1.0"
+    "mixwith": "^0.1.1"
   },
   "devDependencies": {
-    "babel": "^6.0.0",
-    "babel-deco": "^0.1.0",
-    "babel-plugin-transform-decorators": "^6.1.18",
-    "babel-plugin-transform-es2015-modules-umd": "^6.1.18",
-    "babel-plugin-transform-es2015-parameters": "^6.1.18",
-    "babel-plugin-transform-es2015-spread": "^6.1.18",
-    "babel-plugin-transform-flow-strip-types": "^6.1.18",
-    "babel-preset-stage-1": "^6.1.18",
     "event-stream": "^3.3.1",
     "glob": "^5.0.14",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.0.0",
     "gulp-crisper": "^1.0.0",
     "gulp-if": "^2.0.0",
+    "gulp-typescript": "^2.12.0",
     "gulp-uglify": "^1.5.1",
     "gulp-watch": "^4.3.4",
     "mixwith": "^0.1.0"

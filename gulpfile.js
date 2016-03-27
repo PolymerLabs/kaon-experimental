@@ -1,28 +1,17 @@
 'use strict';
 
-const gulp = require('gulp');
-const babel = require('gulp-babel');
-const es = require('event-stream');
-const watch = require('gulp-watch');
-const glob = require('glob');
 const crisper = require('gulp-crisper');
+const es = require('event-stream');
+const glob = require('glob');
+const gulp = require('gulp');
 const gulpif = require('gulp-if');
+const ts = require('gulp-typescript');
 const uglify = require('gulp-uglify');
+const watch = require('gulp-watch');
 
 const Transform = require('stream').Transform;
 
-const babelOpts = {
-  "plugins": [
-    "syntax-decorators",
-    "babel-deco",
-    "transform-flow-strip-types",
-    "transform-class-properties",
-    "transform-es2015-spread",
-    "transform-es2015-parameters",
-    "transform-es2015-modules-amd",
-  ],
-  "presets": ["stage-1"],
-};
+var tsProject = ts.createProject('tsconfig.json');
 
 class Logger extends Transform {
 
@@ -48,41 +37,32 @@ const logger = new Logger();
 gulp.task('default', ['vendor', 'lib', 'demo']);
 
 gulp.task('lib', function() {
-  return gulp.src('lib/*.js')
-      .pipe(babel(babelOpts))
+  return tsProject.src()
+      .pipe(ts(tsProject))
       .pipe(gulp.dest('build/kaon'));
 });
 
 gulp.task('demo', ['hello-world', 'todomvc']);
 
 gulp.task('hello-world', function() {
-  return es.merge(
-    gulp.src('demo/hello-world/*.js')
-        .pipe(babel(babelOpts))
-        .pipe(gulp.dest('build/demo/hello-world')),
-    gulp.src('demo/hello-world/*.html')
-        .pipe(crisper({
-            scriptInHead: false,
-            onlySplit: false,
-        }))
-        .pipe(gulpif(/\.js$/, babel(babelOpts)))
-        .pipe(gulp.dest('build/demo/hello-world'))
-  );
+  return gulp.src('demo/hello-world/*.html')
+    .pipe(crisper({
+        scriptInHead: false,
+        onlySplit: false,
+    }))
+    .pipe(gulpif(/\.js$/, logger))
+    .pipe(gulpif(/\.js$/, ts(tsProject)))
+    .pipe(gulp.dest('build/demo/hello-world'));
 });
 
 gulp.task('misc', function() {
-  return es.merge(
-    gulp.src('demo/misc/*.js')
-        .pipe(babel(babelOpts))
-        .pipe(gulp.dest('build/demo/misc')),
-    gulp.src('demo/misc/*.html')
-        .pipe(crisper({
-            scriptInHead: false,
-            onlySplit: false,
-        }))
-        .pipe(gulpif(/\.js$/, babel(babelOpts)))
-        .pipe(gulp.dest('build/demo/misc'))
-  );
+  return gulp.src('demo/misc/*.html')
+    .pipe(crisper({
+        scriptInHead: false,
+        onlySplit: false,
+    }))
+    .pipe(gulpif(/\.js$/, ts(tsProject)))
+    .pipe(gulp.dest('build/demo/misc'));
 });
 
 gulp.task('todomvc', ['vendor', 'lib', 'todo-src', 'todo-deps'])
@@ -93,7 +73,7 @@ gulp.task('todo-src', function() {
           scriptInHead: false,
           onlySplit: false,
       })))
-      .pipe(gulpif(/\.js$/, babel(babelOpts)))
+      .pipe(gulpif(/\.js$/, ts(tsProject)))
       .pipe(gulp.dest('build/demo/todomvc'));
 });
 
@@ -121,7 +101,7 @@ gulp.task('vendor', [
 
 gulp.task('imd', function() {
   return gulp.src('bower_components/imd/imd.*')
-    .pipe(gulpif(/\.js$/, uglify()))
+    // .pipe(gulpif(/\.js$/, uglify()))
     .pipe(gulp.dest('build/imd/'));
 });
 

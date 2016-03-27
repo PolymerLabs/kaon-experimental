@@ -1,3 +1,5 @@
+import {Constructable, Base} from './util';
+
 const guardedGetters = [
   'offsetLeft',
   'offsetTop',
@@ -35,8 +37,10 @@ const guardedMethods = [
  * must implement a `isLayoutValid` getter/property that returns true when the
  * element has performed all pending async DOM updates.
  */
-export const AsyncMeasure = (superclass) => {
+export const AsyncMeasure = (superclass: Constructable<Base>) => {
   class _AsyncMeasure extends superclass {
+
+    isLayoutValid: boolean;
 
     /**
      * @returns {Promise} that completes in the next animation frame, when it's
