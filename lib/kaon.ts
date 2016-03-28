@@ -1,4 +1,5 @@
-import * as decorators from './kaon/decorators';
+import {customElement} from './kaon/custom-element';
+import {property} from './kaon/property';
 import {AsyncMeasure, AsyncMeasureMixin} from './kaon/async-measure';
 import {Attributes} from './kaon/attributes';
 import {CustomConstructor} from './kaon/constructor';
@@ -9,8 +10,8 @@ import {Constructable} from './kaon/util';
 export {AsyncMeasure} from './kaon/async-measure';
 export {TemplateStamping, template} from './kaon/template';
 
-export const property = decorators.property;
-export const customElement = decorators.customElement;
+export {customElement} from './kaon/custom-element';
+export {property} from './kaon/property';
 
 export const KaonElement =
   AsyncMeasureMixin(

@@ -1,5 +1,4 @@
 import {Constructable, Base, CustomElement, scheduleMicrotask} from './util';
-import * as decorators from './decorators';
 import {
   _readAttributes,
   _template,

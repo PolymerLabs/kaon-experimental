@@ -1,10 +1,12 @@
 'use strict';
 
+const bun = require("bun");
 const crisper = require('gulp-crisper');
 const es = require('event-stream');
 const glob = require('glob');
 const gulp = require('gulp');
 const gulpif = require('gulp-if');
+const rename = require('gulp-rename');
 const ts = require('gulp-typescript');
 const uglify = require('gulp-uglify');
 const watch = require('gulp-watch');
@@ -39,40 +41,37 @@ gulp.task('default', ['vendor', 'lib', 'demo']);
 gulp.task('lib', function() {
   return tsProject.src()
       .pipe(ts(tsProject))
-      .pipe(gulp.dest('build/kaon'));
+      .pipe(gulp.dest(''));
 });
 
-gulp.task('demo', ['hello-world', 'todomvc']);
-
-gulp.task('hello-world', function() {
-  return gulp.src('demo/hello-world/*.html')
-    .pipe(crisper({
-        scriptInHead: false,
-        onlySplit: false,
-    }))
-    .pipe(gulpif(/\.js$/, logger))
-    .pipe(gulpif(/\.js$/, ts(tsProject)))
-    .pipe(gulp.dest('build/demo/hello-world'));
-});
-
-gulp.task('misc', function() {
-  return gulp.src('demo/misc/*.html')
-    .pipe(crisper({
-        scriptInHead: false,
-        onlySplit: false,
-    }))
-    .pipe(gulpif(/\.js$/, ts(tsProject)))
-    .pipe(gulp.dest('build/demo/misc'));
+gulp.task('demo', function() {
+  return gulp.src(['demo/{misc,hello-world}/*.html', 'build/kaon/kaon.d.ts'])
+    .pipe(gulpif(/\.html/,
+      bun([
+        crisper({
+          scriptInHead: false,
+        }),
+        gulpif(/\.js$/, rename((path) => path.extname = '.ts'))
+      ])))
+    .pipe(gulpif(/\.ts$/, ts({
+      target: "es6",
+      module: "amd",
+      moduleResolution: "node",
+      isolatedModules: false,
+      experimentalDecorators: true,
+      emitDecoratorMetadata: true,
+      noImplicitAny: false,
+      noLib: false,
+      suppressImplicitAnyIndexErrors: true,
+    })))
+    .pipe(gulp.dest('build/demo/'));
 });
 
 gulp.task('todomvc', ['vendor', 'lib', 'todo-src', 'todo-deps'])
 
 gulp.task('todo-src', function() {
   return gulp.src(['demo/todomvc/**', '!**/bower_components/**'])
-      .pipe(gulpif(/\.html$/, crisper({
-          scriptInHead: false,
-          onlySplit: false,
-      })))
+      .pipe(gulpif(/\.html$/, crisper()))
       .pipe(gulpif(/\.js$/, ts(tsProject)))
       .pipe(gulp.dest('build/demo/todomvc'));
 });
@@ -93,7 +92,6 @@ gulp.task('todomvc-deps', ['vendor', 'lib'], function() {
 gulp.task('vendor', [
     'imd',
     'incremental-dom',
-    'mixwith',
     'polymer-expressions',
     'stampino',
     'webcomponents',
@@ -113,11 +111,6 @@ gulp.task('webcomponents', function() {
 gulp.task('stampino', function() {
   return gulp.src('node_modules/stampino/stampino.js')
     .pipe(gulp.dest('build/stampino/'));
-});
-
-gulp.task('mixwith', function() {
-  return gulp.src('node_modules/mixwith/mixwith.js')
-    .pipe(gulp.dest('build/mixwith/'));
 });
 
 gulp.task('incremental-dom', function() {
