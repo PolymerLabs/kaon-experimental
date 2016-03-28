@@ -4,21 +4,21 @@ import {
   _properties,
   _constructor} from './symbols';
 
-interface Decorator {
+export interface Decorator {
   (clazz: Function, propName: string, descriptor: ExtendedPropertyDescriptor): PropertyDescriptor;
 }
 
-type Equality = EqualityFunction | 'identity';
-interface EqualityFunction {
+export type Equality = EqualityFunction | 'identity';
+export interface EqualityFunction {
   (a: any, b: any): boolean;
 }
 
-interface PropertyOptions {
+export interface PropertyOptions {
   equality?: Equality;
   notify?: boolean;
 };
 
-interface ExtendedPropertyDescriptor extends PropertyDescriptor {
+export interface ExtendedPropertyDescriptor extends PropertyDescriptor {
   isProperty?: boolean,
   initializer?: () => void,
 }

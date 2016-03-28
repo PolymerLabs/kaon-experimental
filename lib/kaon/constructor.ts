@@ -9,7 +9,7 @@ let _instance;
  * Instead of implementing `createdCallback`, you can implement a normal
  * constructor and it will be called when the element is created.
  */
-export const CustomConstructor = (superclass: Constructable<CustomElement>) =>
+export const CustomConstructor = (superclass: Constructable<CustomElement>) : Constructable<CustomElement> =>
   class extends superclass {
 
     constructor() {

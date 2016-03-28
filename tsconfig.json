@@ -7,7 +7,7 @@
         "jsx": "react",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "declaration": false,
+        "declaration": true,
         "noImplicitAny": false,
         "removeComments": true,
         "noLib": false,
@@ -16,13 +16,12 @@
         "outFile": "build/kaon/kaon.js"
     },
     "filesGlob": [
-        "**/*.ts",
+        "lib/**/*.ts",
         "custom_typings/*.d.ts",
+        "!build/**",
         "!node_modules/**"
     ],
     "files": [
-        "custom_typings/mixwith.d.ts",
-        "custom_typings/stampino.d.ts",
         "lib/kaon.ts",
         "lib/kaon/async-measure.ts",
         "lib/kaon/attributes.ts",
@@ -31,7 +30,9 @@
         "lib/kaon/decorators.ts",
         "lib/kaon/symbols.ts",
         "lib/kaon/template.ts",
-        "lib/kaon/util.ts"
+        "lib/kaon/util.ts",
+        "custom_typings/mixwith.d.ts",
+        "custom_typings/stampino.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

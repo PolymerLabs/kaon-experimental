@@ -29,6 +29,11 @@ const guardedMethods = [
   'focus',
 ];
 
+export interface AsyncMeasure {
+  isLayoutValid : boolean;
+  measure() : Promise<any>;
+}
+
 /**
  * A Mixin that guards synchronouse measurement APIs, like offsetHeight, and
  * proides an async measurement API in `measure()`.
@@ -37,10 +42,10 @@ const guardedMethods = [
  * must implement a `isLayoutValid` getter/property that returns true when the
  * element has performed all pending async DOM updates.
  */
-export const AsyncMeasure = (superclass: Constructable<Base>) => {
-  class _AsyncMeasure extends superclass {
+export const AsyncMeasureMixin = (superclass: Constructable<Base>) : Constructable<AsyncMeasure> =>  {
+  class _AsyncMeasure extends superclass implements AsyncMeasure {
 
-    isLayoutValid: boolean;
+    isLayoutValid : boolean;
 
     /**
      * @returns {Promise} that completes in the next animation frame, when it's

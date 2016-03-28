@@ -37,6 +37,10 @@ export const template = (selector) => (clazz) => {
   return clazz;
 }
 
+export interface TemplateStamping extends KaonBase {
+  template : HTMLTemplateElement;
+}
+
 /**
  * Mixin that implements render() with template stamping. Use @template to
  * specify the template selector.
@@ -44,8 +48,8 @@ export const template = (selector) => (clazz) => {
  * @template('#my-element')
  * class Foo extends TemplateStamping(Kaon(HTMLElement)) {}
  */
-export const TemplateStamping = (superclass: Constructable<KaonBase>) =>
-  class extends superclass {
+export const TemplateStampingMixin = (superclass: Constructable<KaonBase>) : Constructable<TemplateStamping> =>
+  class extends superclass implements TemplateStamping {
 
     get template() {
       return this.constructor[_template];

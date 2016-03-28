@@ -13,7 +13,7 @@ export interface CustomElement extends HTMLElement {
   shadowRoot: Node;
 }
 
-interface ExtendedDocument extends Document {
+export interface ExtendedDocument extends Document {
   registerElement(tagName: string, clazz: any);
 }
 export declare var document: ExtendedDocument;

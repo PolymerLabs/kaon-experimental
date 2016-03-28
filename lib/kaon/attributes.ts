@@ -4,7 +4,7 @@ import {_readAttributes} from './symbols';
 /**
  * Mixin that implements attribute deserialization.
  */
-export const Attributes = (superclass: Constructable<CustomElement>) =>
+export const Attributes = (superclass: Constructable<CustomElement>) : Constructable<CustomElement> =>
   class extends superclass {
 
     attachedCallback() {
