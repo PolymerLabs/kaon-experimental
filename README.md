@@ -420,10 +420,12 @@ There aren't much in the way of demos yet.
 
 ### Hello World:
 
-    $ cd build
-    $ polyserve
+    $ polymer serve build
 
-Open http://localhost:8080/components/build/hello-world/index.html
+Open demo URLs:
+
+  * http://localhost:8080/components/kaon/demo/hello-world/
+  * http://localhost:8080/components/kaon/demo/misc/
 
 ### TodoMVC
 

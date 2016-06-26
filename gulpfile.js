@@ -38,32 +38,28 @@ const logger = new Logger();
 
 gulp.task('default', ['vendor', 'lib', 'demo']);
 
-gulp.task('lib', function() {
-  return tsProject.src()
-      .pipe(ts(tsProject))
+gulp.task('lib', () => {
+  let result = tsProject.src().pipe(ts(tsProject));
+  return es.merge(result.js, result.dts)
       .pipe(gulp.dest(''));
 });
 
 gulp.task('demo', function() {
-  return gulp.src(['demo/{misc,hello-world}/*.html', 'build/kaon/kaon.d.ts'])
-    .pipe(gulpif(/\.html/,
-      bun([
-        crisper({
-          scriptInHead: false,
-        }),
-        gulpif(/\.js$/, rename((path) => path.extname = '.ts'))
-      ])))
-    .pipe(gulpif(/\.ts$/, ts({
-      target: "es6",
-      module: "amd",
-      moduleResolution: "node",
-      isolatedModules: false,
-      experimentalDecorators: true,
-      emitDecoratorMetadata: true,
-      noImplicitAny: false,
-      noLib: false,
-      suppressImplicitAnyIndexErrors: true,
-    })))
+  return es.merge(
+      gulp.src(['demo/{misc,hello-world}/*.ts', 'build/kaon/kaon.d.ts'])
+        .pipe(ts({
+          target: "es6",
+          module: "amd",
+          moduleResolution: "node",
+          isolatedModules: false,
+          experimentalDecorators: true,
+          emitDecoratorMetadata: true,
+          noImplicitAny: false,
+          noLib: false,
+          suppressImplicitAnyIndexErrors: true,
+        })),
+      gulp.src(['demo/{misc,hello-world}/*', '!demo/{misc,hello-world}/*.ts'])
+    )
     .pipe(gulp.dest('build/demo/'));
 });
 

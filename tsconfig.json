@@ -17,8 +17,7 @@
     },
     "filesGlob": [
         "lib/**/*.ts",
-        "custom_typings/*.d.ts",
-        "!node_modules/**"
+        "custom_typings/*.d.ts"
     ],
     "files": [
         "lib/kaon.ts",
