@@ -4,20 +4,6 @@ export interface Constructable<T> {
 
 export interface Base {}
 
-export interface CustomElement extends HTMLElement {
-  createdCallback();
-  attachedCallback();
-  detachedCallback();
-  attributeChangedCallback(attrName: string, oldVal: string, newVal: string);
-  createShadowRoot();
-  shadowRoot: Node;
-}
-
-export interface ExtendedDocument extends Document {
-  registerElement(tagName: string, clazz: any);
-}
-export declare var document: ExtendedDocument;
-
 const _microtaskScheduler = Promise.resolve();
 
 export function scheduleMicrotask(task) {

@@ -2,7 +2,6 @@ import {customElement} from './kaon/custom-element';
 import {property} from './kaon/property';
 import {AsyncMeasure, AsyncMeasureMixin} from './kaon/async-measure';
 import {Attributes} from './kaon/attributes';
-import {CustomConstructor} from './kaon/constructor';
 import {Kaon} from './kaon/base';
 import {TemplateStamping, TemplateStampingMixin} from './kaon/template';
 import {Constructable} from './kaon/util';
@@ -18,5 +17,4 @@ export const KaonElement =
   TemplateStampingMixin(
   <any>Attributes(
   Kaon(
-  CustomConstructor(
-  <any>HTMLElement)))));
+  <any>HTMLElement))));

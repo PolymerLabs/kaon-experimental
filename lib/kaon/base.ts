@@ -1,11 +1,11 @@
-import {Constructable, Base, CustomElement, scheduleMicrotask} from './util';
+import {Constructable, Base, scheduleMicrotask} from './util';
 import {
   _readAttributes,
   _template,
   _properties,
   _constructor} from './symbols';
 
-export interface KaonBase extends CustomElement {
+export interface KaonBase extends HTMLElement {
   isLayoutValid: boolean;
   render();
   invalidate();
@@ -17,25 +17,29 @@ export interface KaonBase extends CustomElement {
  * provided prototype, and optional features are mixed in beneath it on the
  * prototype chain.
  */
-export let Kaon = (superclass: Constructable<CustomElement>): Constructable<KaonBase> =>
+export let Kaon = (superclass: Constructable<HTMLElement>): Constructable<KaonBase> =>
   class extends superclass {
 
     isLayoutValid: boolean;
 
-    createdCallback() {
+    constructor(...args) {
+      console.log('Kaon.constructor A');
+      super(...args);
+      console.log('Kaon.constructor B');
       this.isLayoutValid = true;
       this._createShadow();
-      if (super.createdCallback) super.createdCallback();
     }
 
-    attachedCallback() {
+    connectedCallback() {
+      console.log('Kaon.connectedCallback');
       this.invalidate();
-      if (super.attachedCallback) super.attachedCallback();
+      if (super.connectedCallback) super.connectedCallback();
     }
 
     render() {}
 
     invalidate() {
+      console.log('invalidate');
       if (this.isLayoutValid) {
         this.isLayoutValid = false;
         scheduleMicrotask(() => {
@@ -46,7 +50,7 @@ export let Kaon = (superclass: Constructable<CustomElement>): Constructable<Kaon
     }
 
     _createShadow() {
-      let shadowRoot = this.createShadowRoot();
+      this.attachShadow({mode: 'open'});
     }
 
   };

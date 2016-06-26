@@ -1,4 +1,4 @@
-import {Constructable, Base, CustomElement} from './util';
+import {Constructable, Base} from './util';
 import {KaonBase} from './base';
 import * as stampino from 'stampino';
 import {_template} from './symbols';
@@ -31,8 +31,9 @@ let attributeHandler = {
  * class Foo extends TemplateStamping(Kaon(HTMLElement)) {}
  */
 export const template = (selector) => (clazz) => {
-  let doc = document.currentScript.ownerDocument;
+  let doc = document._currentScript.ownerDocument;
   let template = doc.querySelector(`template${selector}`);
+  console.log('@template', template, doc);
   clazz[_template] = template;
   return clazz;
 }
@@ -56,15 +57,14 @@ export const TemplateStampingMixin = (superclass: Constructable<KaonBase>) : Con
     }
 
     render() {
+      console.log('Template.render', this.template, this.shadowRoot);
       if (this.template && this.shadowRoot) {
         // TODO: use super-classes template for tempalte inheritance
         stampino.render(this.template, this.shadowRoot, this, {
           attributeHandler,
         });
       }
-      if (super.render) {
-        super.render();
-      }
+      if (super.render) super.render();
     }
 
   };

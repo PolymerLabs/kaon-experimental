@@ -10,6 +10,16 @@ class HelloWorldElement extends KaonElement {
   @property()
   name : String;
 
+  constructor() {
+    console.log('HelloWorldElement A');
+    super();
+  }
+
+  connectedCallback() {
+    console.log('hello-world.connectedCallback');
+    super.connectedCallback();
+  }
+
   _onGreetingChange(e) {
     this.greeting = e.target.value;
   }

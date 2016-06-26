@@ -95,12 +95,13 @@ gulp.task('vendor', [
 
 gulp.task('imd', function() {
   return gulp.src('bower_components/imd/imd.*')
-    // .pipe(gulpif(/\.js$/, uglify()))
     .pipe(gulp.dest('build/imd/'));
 });
 
 gulp.task('webcomponents', function() {
-  return gulp.src('bower_components/webcomponentsjs/webcomponentsjs-lite.min.js')
+  return gulp.src([
+      'bower_components/webcomponentsjs/**/*',
+    ])
     .pipe(gulp.dest('build/webcomponentsjs/'));
 });
 
@@ -110,7 +111,10 @@ gulp.task('stampino', function() {
 });
 
 gulp.task('incremental-dom', function() {
-  return gulp.src('node_modules/incremental-dom/dist/incremental-dom-min.js')
+  return gulp.src([
+      'node_modules/incremental-dom/dist/incremental-dom-min.js',
+      'node_modules/incremental-dom/dist/incremental-dom-min.js.map',
+    ])
     .pipe(gulp.dest('build/incremental-dom/'));
 });
 

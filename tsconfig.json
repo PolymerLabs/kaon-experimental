@@ -24,12 +24,12 @@
         "lib/kaon/async-measure.ts",
         "lib/kaon/attributes.ts",
         "lib/kaon/base.ts",
-        "lib/kaon/constructor.ts",
         "lib/kaon/custom-element.ts",
         "lib/kaon/property.ts",
         "lib/kaon/symbols.ts",
         "lib/kaon/template.ts",
         "lib/kaon/util.ts",
+        "custom_typings/custom_elements.d.ts",
         "custom_typings/mixwith.d.ts",
         "custom_typings/stampino.d.ts"
     ],
