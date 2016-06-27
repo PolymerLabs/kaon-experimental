@@ -22,9 +22,9 @@ class MiscElement extends KaonElement {
   constructor() {
     super();
     this.baz = performance.now();
-    // setInterval(() => {
-    //   this.baz = performance.now();
-    // }, 100);
+    setInterval(() => {
+      this.baz = performance.now();
+    }, 100);
   }
 
 }

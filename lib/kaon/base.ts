@@ -23,15 +23,12 @@ export let Kaon = (superclass: Constructable<HTMLElement>): Constructable<KaonBa
     isLayoutValid: boolean;
 
     constructor(...args) {
-      console.log('Kaon.constructor A');
       super(...args);
-      console.log('Kaon.constructor B');
       this.isLayoutValid = true;
       this._createShadow();
     }
 
     connectedCallback() {
-      console.log('Kaon.connectedCallback');
       this.invalidate();
       if (super.connectedCallback) super.connectedCallback();
     }
@@ -39,7 +36,6 @@ export let Kaon = (superclass: Constructable<HTMLElement>): Constructable<KaonBa
     render() {}
 
     invalidate() {
-      console.log('invalidate');
       if (this.isLayoutValid) {
         this.isLayoutValid = false;
         scheduleMicrotask(() => {
