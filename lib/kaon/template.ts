@@ -1,4 +1,4 @@
-import {Constructable, Base} from './util';
+import {Constructable} from './util';
 import {KaonBase} from './base';
 import * as stampino from 'stampino';
 import {_template} from './symbols';

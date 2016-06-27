@@ -46,7 +46,11 @@ gulp.task('lib', () => {
 
 gulp.task('demo', function() {
   return es.merge(
-      gulp.src(['demo/{misc,hello-world}/*.ts', 'build/kaon/kaon.d.ts'])
+      gulp.src([
+          'build/kaon/kaon.d.ts',
+          'custom_typings/custom_elements.d.ts',
+          'demo/{misc,hello-world}/*.ts',
+        ])
         .pipe(ts({
           target: "es6",
           module: "amd",

@@ -1,4 +1,4 @@
-import {Constructable, Base} from './util';
+import {Constructable} from './util';
 import {_readAttributes} from './symbols';
 
 /**

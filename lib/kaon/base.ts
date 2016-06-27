@@ -1,4 +1,4 @@
-import {Constructable, Base, scheduleMicrotask} from './util';
+import {Constructable, scheduleMicrotask} from './util';
 import {
   _readAttributes,
   _template,

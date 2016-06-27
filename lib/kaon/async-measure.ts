@@ -1,4 +1,4 @@
-import {Constructable, Base} from './util';
+import {Constructable} from './util';
 
 const guardedGetters = [
   'offsetLeft',
@@ -29,7 +29,7 @@ const guardedMethods = [
   'focus',
 ];
 
-export interface AsyncMeasure {
+export interface AsyncMeasure extends HTMLElement {
   isLayoutValid : boolean;
   measure() : Promise<any>;
 }
@@ -42,7 +42,7 @@ export interface AsyncMeasure {
  * must implement a `isLayoutValid` getter/property that returns true when the
  * element has performed all pending async DOM updates.
  */
-export const AsyncMeasureMixin = (superclass: Constructable<Base>) : Constructable<AsyncMeasure> =>  {
+export const AsyncMeasureMixin = (superclass: Constructable<HTMLElement>) : Constructable<AsyncMeasure> =>  {
   class _AsyncMeasure extends superclass implements AsyncMeasure {
 
     isLayoutValid : boolean;
