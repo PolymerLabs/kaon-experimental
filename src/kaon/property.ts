@@ -42,30 +42,17 @@ export function property<T>(options?: PropertyOptions) {
 
     const invalidate: InvalidationFunction = options && options.invalidate || Invalidate.ALWAYS;
     const eventName: string|undefined = options && options.eventName;
-
-    // TS property decorators don't receive a descriptor, so get it from the prototype
-    const descriptor = Object.getOwnPropertyDescriptor(clazz.prototype, propName);
-    const getter = descriptor.get;
-    const setter = descriptor.set;
-
-    if (getter != null && setter == null) {
-      console.warn(`Invalid property decoration of getter ${propName} without a setter`);
-      return;
-    }
-
-    const storageProp = Symbol(`__prop_${propName}`);
-    const get = getter || (() => this[storageProp]);
-    const set = setter || ((v) => this[storageProp] = v);
+    const storageProp = Symbol(propName);
 
     return {
       configurable: true,
       enumerable: true,
       get() {
-        return get.call(this);
+        return this[storageProp];
       },
       set(value) {
-        const oldValue = get();
-        set.call(this, value);
+        const oldValue = this[storageProp];
+        this[storageProp] = value;
         if (invalidate(oldValue, value)) {
           this.invalidate();
         }
