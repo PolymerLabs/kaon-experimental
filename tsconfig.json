@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "amd",
+        "target": "esnext",
+        "module": "es6",
         "moduleResolution": "node",
         "isolatedModules": false,
         "jsx": "react",
@@ -12,13 +12,19 @@
         "strictNullChecks": true,
         "noUnusedLocals": true,
         "removeComments": true,
-        "noLib": false,
+        "lib": ["es2017", "dom"],
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
-        "outDir": "lib"
+        "outDir": "./",
+        "rootDirs": [
+          ".",
+          "./node_modules",
+          "./node_modules/@types"
+        ]
     },
     "include": [
         "src/**/*.ts",
         "custom_typings/*.d.ts"
-    ]
+    ],
+    "exclude": []
 }

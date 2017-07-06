@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "es6",
+        "target": "esnext",
+        "jsx": "react",
+        "jsxFactory": "createElement",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noImplicitAny": false,
+        "sourceMap": false,
+        "lib": ["es2017", "dom"]
+    },
+    "include": [
+        "../custom_typings/*.d.ts",
+        "../lib/kaon.d.ts",
+        "hello-world/*.ts",
+        "hello-world/*.tsx"
+    ]
+}

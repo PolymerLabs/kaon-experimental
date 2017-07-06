@@ -2,11 +2,12 @@
   "name": "kaon",
   "version": "0.1.0",
   "private": true,
+  "flat": true,
   "dependencies": {
     "@types/incremental-dom": "^0.5.0",
-    "stampino": "^0.2.1"
+    "incremental-dom": "^0.5.1"
   },
   "devDependencies": {
-    "typescript": "next"
+    "typescript": "^2.3.2"
   }
 }

@@ -1,17 +1,19 @@
-import {customElement} from './kaon/custom-element';
-import {property} from './kaon/property';
-import {AsyncMeasure, AsyncMeasureMixin} from './kaon/async-measure';
-import {Attributes} from './kaon/attributes';
-import {Constructable} from './kaon/util';
-import {Renderable} from './kaon/renderable';
-import {Incremental} from './kaon/incremental';
+import {AsyncMeasure} from './lib/async-measure.js';
+import {Attributes} from './lib/attributes.js';
+import {Constructor} from './lib/util.js';
+import {Renderable} from './lib/renderable.js';
+import {IncrementalJsx} from './lib/incremental-jsx.js';
 
-export {AsyncMeasure} from './kaon/async-measure';
-export {customElement} from './kaon/custom-element';
-export {property} from './kaon/property';
+export {AsyncMeasure} from './lib/async-measure.js';
+export {Attributes} from './lib/attributes.js';
+export {customElement} from './lib/custom-element.js';
+export {Incremental} from './lib/incremental.js';
+export {IncrementalJsx, createElement} from './lib/incremental-jsx.js';
+export {property} from './lib/property.js';
+export {Renderable} from './lib/renderable.js';
 
-export const KaonElement =
-  AsyncMeasureMixin(
-  Incremental(
+export const KaonElement  =
+  AsyncMeasure(
+  IncrementalJsx(
   <any>Attributes(
-  Renderable(HTMLElement))));
+  Renderable(HTMLElement)))) as Constructor<AsyncMeasure & IncrementalJsx & Renderable & HTMLElement>;
