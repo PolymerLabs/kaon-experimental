@@ -1,10 +1,9 @@
 {
     "compilerOptions": {
-        "target": "esnext",
-        "module": "es6",
+        "target": "es2017",
+        "module": "es2015",
         "moduleResolution": "node",
         "isolatedModules": false,
-        "jsx": "react",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "declaration": true,

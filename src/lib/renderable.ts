@@ -7,10 +7,9 @@ function scheduleRender(renderable: Renderable) {
 }
 
 function render(renderable: Renderable) {
-  // console.log('render fn', renderable['tagName']);
   renderable.needsRender = false;
   try {
-    renderable.render();
+    renderable.renderCallback();
   } catch (e) {
     console.warn('error rendering', renderable['tagName']);
     console.error(e);
@@ -44,7 +43,7 @@ function render(renderable: Renderable) {
 
 export interface Renderable {
   needsRender: boolean;
-  render();
+  renderCallback();
   invalidate();
 }
 
@@ -63,16 +62,15 @@ export function Renderable<T extends Constructor<HTMLElement>>(superclass: T): C
       this.invalidate();
     }
 
-    render() {
+    renderCallback() {
       // console.log('Renderable.render', this.tagName);
     }
 
     invalidate() {
-      // console.log('invalidate', this.tagName);
       if (!this.needsRender) {
         this.needsRender = true;
         scheduleRender(this);
       }
     }
-  }
+  };
 }

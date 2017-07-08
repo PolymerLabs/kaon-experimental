@@ -7,32 +7,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { KaonElement, customElement, property, createElement } from '../../kaon.js';
+import { KaonElement, customElement, property, html } from '../../kaon.js';
 import { XGreeting } from './x-greeting.js';
+const x = XGreeting;
 let HelloWorldElement = class HelloWorldElement extends KaonElement {
-    connectedCallback() {
-        let x;
-        if (super.connectedCallback)
-            super.connectedCallback();
+    constructor() {
+        super(...arguments);
+        this._onGreetingChange = (e) => {
+            this.greeting = e.target.value;
+        };
+        this._onNameChange = (e) => {
+            this.name = e.target.value;
+        };
     }
-    patchJsx() {
-        return [
-            createElement("h1", null, "Hello World"),
-            createElement("div", null,
-                "Greeting: ",
-                createElement("input", { "on-change": this._onGreetingChange })),
-            createElement("div", null,
-                "Name: ",
-                createElement("input", { "on-change": this._onNameChange })),
-            createElement("div", null,
-                createElement(XGreeting, { x: 1, greeting: this.greeting, name: this.name })),
-        ];
-    }
-    _onGreetingChange(e) {
-        this.greeting = e.target.value;
-    }
-    _onNameChange(e) {
-        this.name = e.target.value;
+    render() {
+        return html `
+      <style>
+        div {
+          border: solid 1px blue;
+        }
+      </style>
+      <h1>Hello World</h1>
+      <div>Greeting: <input on-change=${_ => this._onGreetingChange}></input></div>
+      <div>Name: <input on-change=${_ => this._onNameChange}></input></div>
+      <div>
+        <x-greeting greeting=${this.greeting} name=${this.name}></x-greeting>
+      </div>
+    `;
     }
 };
 __decorate([

@@ -7,13 +7,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { KaonElement, customElement, property, createElement } from '../../kaon.js';
+import { KaonElement, customElement, property, html } from '../../kaon.js';
 let XGreeting = class XGreeting extends KaonElement {
-    patchJsx() {
-        return [
-            createElement("span", null, this.greeting || 'Hello'),
-            createElement("span", null, this.name || 'World')
-        ];
+    render() {
+        return html `
+      <span>${this.greeting || 'Hello'}</span>
+      <span>${this.name || 'World'}</span>
+    `;
     }
 };
 __decorate([
