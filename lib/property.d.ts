@@ -10,3 +10,4 @@ export interface PropertyOptions {
     eventName?: string;
 }
 export declare function property(options?: PropertyOptions): (clazz: any, propName: string) => any;
+export declare function initializeProperties(clazz: any): void;

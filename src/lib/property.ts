@@ -68,3 +68,17 @@ export function property(options?: PropertyOptions) {
     };
   }
 }
+
+/**
+ * When not using decorators, define a static `properties` getter and
+ * call initializeProperties(MyClass).
+ */
+export function initializeProperties(clazz: any) {
+  const properties = clazz.properties;
+  if (properties === undefined) {
+    return;
+  }
+  for (const [propName, options] of Object.entries(properties)) {
+    Object.defineProperty(clazz.prototype, propName, property(options)(clazz, propName));
+  }
+}

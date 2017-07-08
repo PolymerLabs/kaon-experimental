@@ -5,7 +5,7 @@ import { RenderHTML } from "./lib/render-html.js";
 export { AsyncMeasure } from './lib/async-measure.js';
 export { Attributes } from './lib/attributes.js';
 export { customElement } from './lib/custom-element.js';
-export { property } from './lib/property.js';
+export { property, initializeProperties } from './lib/property.js';
 export { Renderable } from './lib/renderable.js';
 export { html } from '../lit-html/lib/lit-html.js';
 export declare const KaonElement: Constructor<AsyncMeasure & RenderHTML & Renderable & HTMLElement>;
