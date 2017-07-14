@@ -6,9 +6,9 @@
   version "2.2.41"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-2.2.41.tgz#e27cf0817153eb9f2713b2d3f6c68f1e1c3ca608"
 
-lit-html@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-0.2.0.tgz#1b8a4820b5bde3a5b5dc2d6b7def5041f58fb2b3"
+lit-html@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-0.2.1.tgz#bab5b8e002b7507d29fd28e20da4f80b06abad00"
   dependencies:
     "@types/mocha" "^2.2.41"
 

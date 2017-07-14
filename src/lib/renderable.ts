@@ -3,13 +3,13 @@ import {Constructor} from './util.js';
 const renderPromise = Promise.resolve();
 
 function scheduleRender(renderable: Renderable) {
-  renderPromise.then(() => render(renderable));
+  renderable.renderComplete = renderPromise.then(() => render(renderable));
 }
 
 function render(renderable: Renderable) {
   renderable.needsRender = false;
   try {
-    renderable.renderCallback();
+    return renderable.renderCallback();
   } catch (e) {
     console.warn('error rendering', renderable['tagName']);
     console.error(e);
@@ -43,7 +43,8 @@ function render(renderable: Renderable) {
 
 export interface Renderable {
   needsRender: boolean;
-  renderCallback();
+  renderComplete?: Promise<any>;
+  renderCallback(): Promise<any>|void;
   invalidate();
 }
 
@@ -55,6 +56,7 @@ export function Renderable<T extends Constructor<HTMLElement>>(superclass: T): C
   return class extends superclass {
 
     needsRender: boolean;
+    renderComplete?: Promise<any>;
 
     constructor(...args) {
       super(...args);
@@ -62,7 +64,7 @@ export function Renderable<T extends Constructor<HTMLElement>>(superclass: T): C
       this.invalidate();
     }
 
-    renderCallback() {
+    renderCallback(): Promise<any>|void {
       // console.log('Renderable.render', this.tagName);
     }
 

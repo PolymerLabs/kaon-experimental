@@ -31,6 +31,8 @@ export interface PropertyOptions {
    * The event to fire, if any, when this property changes.
    */
   eventName?: string;
+
+  attribute?: string;
 };
 
 /**
@@ -43,6 +45,7 @@ export function property(options?: PropertyOptions) {
     const invalidate: InvalidationFunction = options && options.invalidate || Invalidate.ALWAYS;
     const eventName: string|undefined = options && options.eventName;
     const storageProp = Symbol(propName);
+    const attribute = options && options.attribute;
 
     return {
       configurable: true,
@@ -56,6 +59,30 @@ export function property(options?: PropertyOptions) {
         if (invalidate(oldValue, value)) {
           this.invalidate();
         }
+
+        // TODO: when is the right time to run observers, set attributes, etc.?
+        // 1. Synchronously, before render (this implementation)
+        // 2. Asynchronously, before render
+        // 3. Asynchronously, after render
+        // 4. All of the above, via options to @observe()
+
+        // reflect to attribute
+        if (attribute !== undefined) {
+          this.setAttribute(attribute, value);
+        }
+
+        // Run observers
+        const observers = clazz.observers && clazz.observers.get(propName);
+        if (observers !== undefined) {
+          for (const observer of observers) {
+            try {
+              observer(this, value, oldValue);
+            } catch (e) {
+              console.error(e);
+            }
+          }
+        }
+
         // Fire the change event
         if (eventName) {
           window.requestAnimationFrame(() => {
