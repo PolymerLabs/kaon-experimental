@@ -79,8 +79,8 @@ class EventPart extends Part {
   eventName: string;
   private _listener: any;
 
-  constructor(element: Element, eventName: string) {
-    super();
+  constructor(instance: TemplateInstance, element: Element, eventName: string) {
+    super(instance);
     this.element = element;
     this.eventName = eventName;
   }

@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "flat": true,
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
-    "lit-html": "^0.2.0"
+    "lit-html": "^0.2.3"
   },
   "devDependencies": {
     "typescript": "^2.3.2"
