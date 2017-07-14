@@ -1,125 +1,81 @@
 # Kaon
 
-Kaon is a very, very rough set of experiments with ES6, ES7+, and Web
-Components.
+Kaon is an experimental Web Component library designed to be extremely small and work with newer platform features like ES6 modules and supports proposals like decorators.
 
-It only works in recent versions of Chrome and isn't even pretending to be
-production ready. It's not clear that many of the experiments in Kaon will bear
-fruit. Please do not use it.
+Kaon is not production ready. It doesn't have ShadyDOM/ShadyCSS integration, nor a build step: it only works in browsers that support native Shadow DOM, Custom Elements and Modules.
 
 ## Why
 
-Kaon is a set of experiments and an exploration of what a web components
-framework could look like in the near-ish future if it:
+Kaon is a set of experiments and an exploration of what a Web Component
+base-class could look like in the near future if it:
 
- * Took advantage of new and speculative JavaScript features, like class
-   properties and decorators
- * Enabled pay-for-play by packaging features as mixins to be applied by element
-   authors
- * Used JavaScript compilers like Babel if necessary or helpful
- * Assumed native implementation of web components
- * Used libraries like incremental-dom to achieve fast incremental DOM updates,
-   and PolymerExpressions for expression evaluation
  * Used simple data-binding with one-way, top-down, ordered data-flow
- * Updated element state asynchronously, to batch DOM changes and to enable
-   top-down data-flow while preserving OOP-style element APIs
+ * Updated element state asynchronously, to batch state and DOM changes and to
+   enable top-down dataflow while preserving OOP-style element APIs
+ * Used lit-html, a small HTML-in-JS template library that lets you write
+   tempaltes as JaavScript template literals.
+ * Enabled proposed JavaScript features, like class properties and
+   property decorators, using compilers like TypeScript if necessary
  * Broke some previously fundamental assumptions about elements,
-   list synchronous layout. In Kaon using APIs like offsetWidth requires care.
- * Used low-cost templating abstractions for control-flow, rather than custom
-   template elements as control flow constructs.
- * Implemented the "constructor-call-trick" to enable user-defined ES6 class
-   constructors
+   like synchronous layout. In Kaon using APIs like offsetWidth requires care.
+ * Only used npm/Yarn
 
-Kaon explores both syntax changes that could potentially be applied to Polymer
-1.x, and behavior changes that might, or might not, fit with Polymer 1.x, but
-could possibly influence future versions of Polymer or other web components
-frameworks if they are shown to be successful.
+Kaon focuses on the minimal set of features needed for basic Web Components:
 
-While Kaon is essentially a grab bag of different experiments tied together, the
-goals of each experiment are usually similar: to improve developer ergonomics,
-reduce implementation complexity, and help keep developers on the fast path.
+ * Templating, using lit-html
+ * Property observation, by either using decorators, or a special initializer
+ * Rendering scheduling to batch property changes
 
-The big gambit is that async rendering and incremental DOM updates can provide
-ergonomics and performance benefits. This is not at all certain, and it could be
-that breaking synchronous layout is too big of a pill to swallow, or that
-incremental-dom isn't fast enough for re-render-the-world style templating.
+## Example Element
+
+```javascript
+import { KaonElement, html, initializeProperties } from '../../kaon.js';
+
+export class XGreeting extends KaonElement {
+
+  static get properties() {
+    return {
+      greeting: undefined,
+      name: undefined,
+    };
+  }
+
+  render() {
+    return html `
+      <span>${this.greeting || 'Hello'}</span>
+      <span>${this.name || 'World'}</span>
+    `;
+  }
+};
+// These are not needed if using the @property and @customElement decorators
+initializeProperties(XGreeting);
+customElements.define('x-greeting', XGreeting);
+```
 
 ## Features
 
-### JavaScript Classes and OOP for Elements
+### JavaScript template literal templates
 
-Custom elements ultimately must extend `HTMLElement`, JavaScript classes let us
-express this explicitly:
+[lit-html](https://github.com/PolymerLabs/lit-html) enables elements to express their tempaltes as JavaScript template literals. The `html` template tag creates an HTML `<template>` element that's used to create and efficiently update the element's shadow root.
 
-```javascript
-class MyElement extends HTMLElement {}
+Kaon adds property setting and event listener support on top of lit-html.
+Properties are set by default. Attribtues are set if there's no expression in the value, or if the name is suffixed by `$`. Event listeners are registered if the name starts with `on-`.
 
-class MyButton extends HTMLButtonElement {}
-```
-
-We need to place Kaon on the prototype chain to implement certain features, like
-attribute de-serialization, so Kaon is written as a mixin:
+Elements return a lit-html `TemplateResult` from their `render` method, and the Kaon `RenderHTML` mixin applies the result to the element's shadow root.
 
 ```javascript
-class MyElement extends Kaon(HTMLElement) {}
-
-class MyButton extends Kaon(HTMLButtonElement) {}
-```
-
-The style of mixins used in Kaon is described here:
-https://github.com/justinfagnani/mixwith.js
-
-Most of Kaon's features are optional and can mixed in individually:
-
-```javascript
-// An element with attribute deserialization and template stamping:
-class MyElement extends TemplateStamping(Attributes(Kaon(HTMLElement))) {}
-```
-
-mixwith.js can help make the syntax nicer:
-
-```javascript
-// An element with attribute deserialization and template stamping:
-class MyElement extends mix(HTMLElement).with(Kaon, Attributes, TemplateStamping) {}
-```
-
-`KaonElement` is provided with all the features already mixed into HTMLElement.
-
-```javascript
-// An element with attribute deserialization and template stamping:
-class MyElement extends KaonElement {}
-```
-
-Kaon implements custom element lifecycle methods like createdCallback. Rather
-than define new callbacks for element authors to use, standard method overriding
-for elements and any further subclasses:
-
-```javascript
-class MyElement extends Kaon(HTMLElement) {
-  createdCallback() {
-    super.createdCallback();
-    // custom initialization here
+  render() {
+    return html `
+      <div someProperty=${this.aValue} an-attribute$=${bar}>${this.title}</div>
+    `;
   }
-}
 ```
 
-#### Benefits
-
-Compared to Polymer 1.0, using standard OOP practices and mixins eliminates the
-need for behaviors and custom lifecycle methods (like `created`). It allows
-authors to control when they call into framework code by the placement of
-`super` calls. It reduces the number of new concepts introduced on top of
-JavaScript OOP and standard web components.
-
-#### Drawbacks
-
-Developers must remember to call into the framework, like with
-`super.createdCallback`, for their elements to work. However, this is normal in
-OOP and could be checked with a linter.
+lit-html supports very expressive composition of templates. You can embed simple values, HTML nodes, other templates, and arrays of and functions that return all of the above. You use regular JavaScript logic to build up computed parts of a template.
 
 ### Class Properties, Type Annotations and Decorators for Properties
 
-ES2017? class properties give us a standard syntax to declare properties,
+JavaScript class properties give us a standard syntax to declare properties,
 instead of Polymer's `properties` block. Type annotations give us a standard
 syntax for specifying the type of a property, useful for attribute
 de-serialization. Decorators let users specify other metadata, and perform
@@ -306,6 +262,8 @@ its subtree update, in order of B, E, F.
 
 ### Performance
 
+*This is a bit outdated as Chrome Promise performance has improved significantly*
+
 Queuing and de-queing microtasks has overhead. It's been measured to be in the
 low single-digit microsecond on desktop Chrome. This is pretty small, but in a
 large app there might be thousands of custom elements, adding up to milliseconds
@@ -330,46 +288,6 @@ There are a few things that mitigate this impact:
      root's content are performed by Kaon (in observers or templating). Kaon can
      detect if any content elements perform async layout by default, and flush
      them in the correct order.
-
-### Templating: incremental-dom and composable template
-
-Kaon uses the stampino library for templating, which enables template
-inheritance and composition.
-
-See https://github.com/justinfagnani/stampino
-
-Stampino uses incremental-dom for DOM mutations. This means that the general
-approach to updates in to re-render the whole template and like incremental-dom
-figure out which parts have changed and need updating. The templating system is
-therefore pretty simple (stampino weighs in at ~200 lines and Kaon has a few
-lines to call into it), should be fast (needs benchmarks!), and yet very
-powerful.
-
-Since stampino templating is a mixin, an element could choose to use another
-template system. One idea is to provide a static template system with no
-data-binding at all. This would be very, very cheap in terms of code size and
-performance.
-
-### Event handling
-
-Kaon supports declarative event handlers. The handler is a Polymer expression,
-which is evaluated when the event fires and has its `this` pointer set to the
-current data-model, and `$event` property set to the event.
-
-This approach means that declarative event handlers can call any JavaScript
-method, even ones that don't receive events:
-
-```html
-  <input on-change="{{_setSomething($event.target.value)}}">
-```
-
-Handlers can call methods on the model:
-
-```html
-  <template type="repeat" items="{{animals}}">
-    <button on-click="{{item.makeNoise()}}">Make Noise</button>
-  </template>
-```
 
 ### Observers
 
@@ -410,9 +328,8 @@ could be provided via an optional mixin, like the other features.
 Building Kaon requires Node 5.x
 
     $ cd kaon
-    $ bower install
-    $ npm install
-    $ gulp
+    $ yarn install --flat
+    $ npm run build
 
 ## Demos
 
@@ -420,14 +337,18 @@ There aren't much in the way of demos yet.
 
 ### Hello World:
 
-    $ polymer serve build
+Kaon requires an unrelease version of `polyserve` with the `--npm` flag.
+
+    $ polyserve --npm
 
 Open demo URLs:
 
   * http://localhost:8080/components/kaon/demo/hello-world/
-  * http://localhost:8080/components/kaon/demo/misc/
+  * http://localhost:8080/components/kaon/demo/hello-world-js/
 
 ### TodoMVC
+
+*Note: Outdated and not working*
 
 TodoMVC is not yet complete, and probably requires more work on Kaon to be
 fully implementable.
